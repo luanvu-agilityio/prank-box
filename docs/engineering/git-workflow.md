@@ -27,3 +27,11 @@ Do not add AI attribution or `Co-authored-by` trailers.
 - Add screenshots for visual changes when available.
 - All type checks, lint checks, and formatting checks must pass.
 - Merge only after review and a green validation result.
+
+## Agent Continuity
+
+- Never stop coding because an agent step limit is reached.
+- Preserve work on the current branch and commit only completed, validated work.
+- Continue with a fresh session, a continuation task, or the appropriate specialized agent.
+- Re-read only the minimum required context and continue from the latest Git state.
+- Keep the same branch, commit, PR, and validation workflow across session boundaries.
