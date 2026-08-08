@@ -1,5 +1,6 @@
+import { useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { colors } from '@/shared/constants/colors'
 import type { GhostLevel } from '@/features/ghost-detector/types/ghost-types'
 
@@ -12,6 +13,10 @@ interface EmfMeterProps {
 export function EmfMeter({ entity, level, reading }: EmfMeterProps) {
   const readingProgress = useSharedValue(reading / 10)
   const barFillStyle = useAnimatedStyle(() => ({ transform: [{ scaleX: readingProgress.value }] }))
+
+  useEffect(() => {
+    readingProgress.value = withTiming(reading / 10, { duration: 500 })
+  }, [reading, readingProgress])
 
   return (
     <View style={styles.container}>

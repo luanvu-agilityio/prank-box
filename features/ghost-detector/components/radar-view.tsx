@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Animated, {
   useAnimatedStyle,
@@ -17,7 +18,9 @@ interface RadarViewProps {
 export function RadarView({ dots }: RadarViewProps) {
   const rotation = useSharedValue(0)
   const sweepStyle = useAnimatedStyle(() => ({ transform: [{ rotate: `${rotation.value}deg` }] }))
-  rotation.value = withRepeat(withTiming(360, { duration: GHOST_CONFIG.sweepDuration }), -1)
+  useEffect(() => {
+    rotation.value = withRepeat(withTiming(360, { duration: GHOST_CONFIG.sweepDuration }), -1)
+  }, [rotation])
 
   return (
     <View style={styles.radar}>

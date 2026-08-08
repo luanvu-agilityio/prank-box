@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { StyleSheet } from 'react-native'
 import Animated, {
   useAnimatedStyle,
@@ -20,11 +21,13 @@ export function GhostDot({ dot }: GhostDotProps) {
     top: dot.y,
   }))
 
-  opacity.value = withSequence(
-    withTiming(1, { duration: 500 }),
-    withTiming(1, { duration: 4_000 }),
-    withTiming(0, { duration: 800 }),
-  )
+  useEffect(() => {
+    opacity.value = withSequence(
+      withTiming(1, { duration: 500 }),
+      withTiming(1, { duration: 4_000 }),
+      withTiming(0, { duration: 800 }),
+    )
+  }, [opacity])
 
   return <Animated.View style={[styles.dot, animatedStyle]} />
 }
