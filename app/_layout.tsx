@@ -6,12 +6,14 @@ import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { colors } from '@/shared/constants/colors'
+import { useAppStore } from '@/stores/useAppStore'
 import '../global.css'
 
 void SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
   const [loaded] = useFonts({ Inter_400Regular, Inter_500Medium, Inter_700Bold, SpaceMono_700Bold })
+  const hasSeenOnboarding = useAppStore((state) => state.hasSeenOnboarding)
 
   useEffect(() => {
     if (loaded) void SplashScreen.hideAsync()
@@ -22,6 +24,7 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <Stack
+        initialRouteName={hasSeenOnboarding ? '(tabs)' : 'onboarding'}
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',
@@ -29,6 +32,7 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="onboarding" />
         <Stack.Screen name="prank" options={{ animation: 'slide_from_right' }} />
       </Stack>
     </SafeAreaProvider>
