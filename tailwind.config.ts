@@ -33,8 +33,9 @@ const config: Config = {
         'system-gray': colors.systemGray,
       },
       fontSize: { micro: '11px', caption: '13px', body: '16px', h1: '32px', h2: '24px' },
-      spacing: { card: '164px', icon: '62px', header: '46px' },
+      spacing: { arc: '150px', card: '164px', icon: '62px', header: '46px' },
       borderRadius: { control: '14px' },
+      letterSpacing: { electric: '2px' },
       fontFamily: {
         inter: ['Inter_400Regular'],
         'inter-medium': ['Inter_500Medium'],
