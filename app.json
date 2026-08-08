@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "PrankBox",
+    "slug": "prankbox",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "prankbox",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.luanvuagilityio.prankbox"
+    },
+    "android": {
+      "package": "com.luanvuagilityio.prankbox"
+    },
+    "plugins": ["expo-router", "expo-font"]
+  }
+}
