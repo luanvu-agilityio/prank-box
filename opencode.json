@@ -70,7 +70,7 @@
   "agent": {
     "build": {
       "model": "opencode-go/gpt-5.6-luna",
-      "steps": 30,
+      "steps": 60,
       "permission": {
         "edit": "allow",
         "bash": "allow",
