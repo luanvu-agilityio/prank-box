@@ -310,12 +310,22 @@ As a session grows, the agent's context window fills up. Symptoms of degradation
 
 Never abandon an implementation because an agent, tool, context window, or session limit was reached. If the message says **"Maximum step for this agent has been reached"** or a similar limit/error occurs:
 
+The step-limit message is an execution-loop limit, not a reason to stop the product task. It is distinct from the approximately 80,000-token context handoff threshold.
+
 1. Stop only the current agent execution, not the coding task.
 2. Inspect `git status`, the current diff, and the last completed checklist item so partial work is preserved and not duplicated.
 3. Continue with a fresh build-agent session, or delegate the remaining focused work to another suitable agent when a new session is unavailable.
 4. If context is the constraint, start a new session in the same repository; all files, configuration, agents, and skills remain available.
 5. If the coding agent is unavailable, use a bugfix agent for implementation blockers, an explore agent for bounded searches, or a free coding model for simple continuation work.
 6. Re-run the required verification after continuation and keep working until the requested task is complete, unless blocked by a missing dependency or an explicit user decision.
+
+If the current build agent reaches its step limit, immediately use this recovery sequence instead of returning a completion message:
+
+1. Preserve the current worktree; do not reset, stash, or discard partial changes.
+2. Record the exact unfinished step and validation state in the task list.
+3. Start a fresh build session or delegate the exact remaining task to a fresh coding-capable agent.
+4. Give the continuation agent the repository path, current branch, unfinished checklist item, and required verification command.
+5. Reinspect `git status` and the diff before editing, then continue from the preserved state.
 
 Before handing off, record unfinished work in the task list and leave the workspace in a compilable state whenever possible. Apply this protocol to equivalent rate limits, tool failures, context exhaustion, compaction interruptions, and model failures.
 
@@ -351,7 +361,7 @@ The following are pre-configured in `opencode.json`:
 | Reserved buffer | `compaction.reserved: 8000` | 8K token buffer prevents overflow during compaction |
 | Tool output limit | `tool_output.max_lines: 150` | Truncates tool output to 150 lines (full output saved to disk) |
 | Tool output bytes | `tool_output.max_bytes: 6144` | Truncates tool output to 6KB (full output saved to disk) |
-| Build agent steps | `agent.build.steps: 30` | Max 30 iterations before forcing text-only response (prevents runaway loops) |
+| Build agent steps | `agent.build.steps: 60` | Max 60 iterations before continuation recovery is required |
 | Plan agent steps | `agent.plan.steps: 15` | Max 15 iterations for planning |
 | Bugfix agent steps | `agent.bugfix.steps: 20` | Max 20 iterations for debugging |
 | Compaction model | `agent.compaction.model: deepseek-v4-flash-free` | Uses free model for compaction summaries (saves money) |
