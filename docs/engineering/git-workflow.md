@@ -35,3 +35,4 @@ Do not add AI attribution or `Co-authored-by` trailers.
 - Continue with a fresh session, a continuation task, or the appropriate specialized agent.
 - Re-read only the minimum required context and continue from the latest Git state.
 - Keep the same branch, commit, PR, and validation workflow across session boundaries.
+- At approximately 80,000 session tokens, proactively hand off to a fresh coding agent or session before the step limit is reached. Preserve the Git state and continue the same task without restarting or abandoning work.

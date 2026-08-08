@@ -70,6 +70,8 @@ PrankBox/
 7. **Constants** — `UPPER_SNAKE_CASE` for true constants, `camelCase` for configuration objects.
 8. **No inline styles** — use `StyleSheet.create()` at the bottom of each component file.
 9. **One component per file** — except for tiny sub-components tightly coupled to the parent.
+10. **Separate component files** — reusable or independently testable UI components must live in their own files. Do not define sizeable component trees or screen sub-components inside a screen file.
+11. **Separate supporting files** — constants, types, hooks, utilities, and helpers must live in focused files with one clear responsibility. Do not place sizeable supporting modules inside component or screen files.
 
 ### React Native Specific
 
@@ -303,6 +305,21 @@ As a session grows, the agent's context window fills up. Symptoms of degradation
 | **Red** (85%+ / compaction triggered) | Stop. Tell the user: "Context is nearly full. Please start a new session for further work." Compaction will auto-trigger but quality drops. |
 
 ### When to Start a New Session
+
+### Continuation Protocol
+
+Never abandon an implementation because an agent, tool, context window, or session limit was reached. If the message says **"Maximum step for this agent has been reached"** or a similar limit/error occurs:
+
+1. Stop only the current agent execution, not the coding task.
+2. Inspect `git status`, the current diff, and the last completed checklist item so partial work is preserved and not duplicated.
+3. Continue with a fresh build-agent session, or delegate the remaining focused work to another suitable agent when a new session is unavailable.
+4. If context is the constraint, start a new session in the same repository; all files, configuration, agents, and skills remain available.
+5. If the coding agent is unavailable, use a bugfix agent for implementation blockers, an explore agent for bounded searches, or a free coding model for simple continuation work.
+6. Re-run the required verification after continuation and keep working until the requested task is complete, unless blocked by a missing dependency or an explicit user decision.
+
+Before handing off, record unfinished work in the task list and leave the workspace in a compilable state whenever possible. Apply this protocol to equivalent rate limits, tool failures, context exhaustion, compaction interruptions, and model failures.
+
+When the session reaches approximately **80,000 tokens**, proactively hand off to a fresh coding agent or session before the agent step limit is reached. Preserve the current Git state, task list, validation results, and exact next action so work continues without duplication.
 
 Start a new session when:
 1. You finish a complete feature (e.g., one prank is done)
