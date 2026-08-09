@@ -11,6 +11,7 @@ import { LockBadge } from './lock-badge'
 interface PrankCardProps {
   prank: PrankConfig
   isLocked: boolean
+  onOpen: () => void
   onLockedPress: () => void
 }
 
@@ -23,7 +24,7 @@ const cardVariants = cva(
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
-export const PrankCard = ({ prank, isLocked, onLockedPress }: PrankCardProps) => {
+export const PrankCard = ({ prank, isLocked, onLockedPress, onOpen }: PrankCardProps) => {
   const router = useRouter()
   const scale = useSharedValue(1)
   const animatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }))
@@ -34,6 +35,7 @@ export const PrankCard = ({ prank, isLocked, onLockedPress }: PrankCardProps) =>
       onLockedPress()
       return
     }
+    onOpen()
     router.push(prank.route)
   }
 

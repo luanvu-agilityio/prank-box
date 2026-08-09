@@ -11,11 +11,13 @@ import { pranks } from '@/features/prank-catalog/data/pranks'
 import { DisclaimerModal } from '@/shared/ui/disclaimer-modal'
 import { colors } from '@/shared/constants/colors'
 import { usePrankStore } from '@/stores/usePrankStore'
+import { useAdStore } from '@/stores/useAdStore'
 
 export default function HomeScreen() {
   const router = useRouter()
   const insets = useSafeAreaInsets()
   const isPremium = usePrankStore((state) => state.isPremium)
+  const incrementPrankOpen = useAdStore((state) => state.incrementPrankOpen)
   const [showDisclaimer, setShowDisclaimer] = useState(false)
 
   const showLockedMessage = () => {
@@ -35,6 +37,7 @@ export default function HomeScreen() {
     <View className="flex-1 px-1">
       <PrankCard
         isLocked={!isPremium && !item.isFree}
+        onOpen={incrementPrankOpen}
         onLockedPress={showLockedMessage}
         prank={item}
       />
