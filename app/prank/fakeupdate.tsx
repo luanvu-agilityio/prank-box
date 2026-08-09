@@ -114,7 +114,7 @@ export default function FakeUpdateScreen() {
               <Text style={styles.percent}>{progress}%</Text>
             </View>
           )}
-          <Text style={styles.warning}>Do not turn off your device</Text>
+          <Text style={styles.warning}>SIMULATION — your device is not updating</Text>
         </View>
       )}
       <Text style={styles.prankLabel}>PRANK</Text>
@@ -149,11 +149,15 @@ const styles = StyleSheet.create({
   lockTime: { color: colors.white, fontFamily: 'Inter_400Regular', fontSize: 76 },
   percent: { color: colors.white, fontFamily: 'SpaceMono_400Regular', fontSize: 13, marginTop: 12 },
   prankLabel: {
+    backgroundColor: colors.warning,
+    borderRadius: 6,
     bottom: 14,
-    color: colors.white,
+    color: colors.ink,
     fontFamily: 'SpaceMono_400Regular',
-    fontSize: 9,
-    opacity: 0.3,
+    fontSize: 12,
+    fontWeight: '700',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
     position: 'absolute',
     right: 14,
   },

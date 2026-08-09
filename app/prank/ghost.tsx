@@ -12,6 +12,7 @@ import { GHOST_CONFIG, GHOST_TYPES } from '@/features/ghost-detector/constants/g
 import type { GhostDotData, GhostLevel } from '@/features/ghost-detector/types/ghost-types'
 import { colors } from '@/shared/constants/colors'
 import { DisclaimerModal } from '@/shared/ui/disclaimer-modal'
+import { PrankIndicator } from '@/shared/ui/prank-indicator'
 import { useAppStore } from '@/stores/useAppStore'
 
 const DOT_COLORS = [colors.white, colors.bloodRed, colors.ghostPurple]
@@ -32,6 +33,7 @@ export default function GhostScreen() {
   const highWarningRef = useRef(false)
 
   useEffect(() => {
+    let cancelled = false
     const loadAmbient = async () => {
       if (!soundEnabled) return
       const { sound } = await Audio.Sound.createAsync(ghostAmbient, {
@@ -39,6 +41,10 @@ export default function GhostScreen() {
         shouldPlay: true,
         volume: 0.25,
       })
+      if (cancelled) {
+        await sound.unloadAsync().catch(() => undefined)
+        return
+      }
       soundRef.current = sound
     }
     void loadAmbient()
@@ -81,9 +87,12 @@ export default function GhostScreen() {
     addDot()
 
     return () => {
+      cancelled = true
       if (emfTimerRef.current) clearInterval(emfTimerRef.current)
       if (dotTimerRef.current) clearTimeout(dotTimerRef.current)
-      void soundRef.current?.unloadAsync()
+      const sound = soundRef.current
+      soundRef.current = null
+      void sound?.unloadAsync().catch(() => undefined)
     }
   }, [hapticsEnabled, soundEnabled])
 
@@ -94,6 +103,7 @@ export default function GhostScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <PrankIndicator />
       <View style={styles.header}>
         <Pressable
           accessibilityLabel="Go back"

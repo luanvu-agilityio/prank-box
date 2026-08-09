@@ -1,7 +1,7 @@
 import * as Haptics from 'expo-haptics'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
-import { Pressable, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { onboardingSteps } from '@/features/onboarding/constants/onboarding-steps'
 import { ActionButton } from '@/shared/ui/action-button'
@@ -29,6 +29,7 @@ export default function OnboardingScreen() {
   }
 
   const handleSkip = () => {
+    if (isDisclaimer) return
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     setHasSeenOnboarding(true)
     router.replace('/(tabs)')
@@ -50,16 +51,19 @@ export default function OnboardingScreen() {
     />
   )
 
+  const screenStyle = StyleSheet.create({
+    screen: { paddingBottom: insets.bottom + 24, paddingTop: insets.top + 24 },
+  })
+
   return (
-    <View
-      className="flex-1 bg-ink px-6"
-      style={{ paddingBottom: insets.bottom + 24, paddingTop: insets.top + 24 }}
-    >
+    <View className="flex-1 bg-ink px-6" style={screenStyle.screen}>
       <View className="flex-row items-center justify-between">
         <Text className="font-mono text-micro tracking-widest text-gold">PRANKBOX</Text>
-        <Pressable accessibilityRole="button" onPress={handleSkip}>
-          <Text className="font-inter-medium text-caption text-gray">Skip</Text>
-        </Pressable>
+        {!isDisclaimer && (
+          <Pressable accessibilityRole="button" onPress={handleSkip}>
+            <Text className="font-inter-medium text-caption text-gray">Skip</Text>
+          </Pressable>
+        )}
       </View>
       <View className="flex-1 justify-center">
         <View className="mb-8 h-24 w-24 items-center justify-center rounded-3xl bg-white/5">

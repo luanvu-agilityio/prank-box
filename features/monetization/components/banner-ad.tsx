@@ -2,11 +2,13 @@ import { BannerAd as GoogleBannerAd, BannerAdSize } from 'react-native-google-mo
 import { StyleSheet, View } from 'react-native'
 import { AD_CONFIG } from '@/features/monetization/constants/ad-config'
 import { usePrankStore } from '@/stores/usePrankStore'
+import { useAdStore } from '@/stores/useAdStore'
 
 export function BannerAd() {
   const isPremium = usePrankStore((state) => state.isPremium)
+  const adsReady = useAdStore((state) => state.adsReady)
 
-  if (isPremium) return null
+  if (isPremium || !adsReady) return null
 
   return (
     <View style={styles.container}>

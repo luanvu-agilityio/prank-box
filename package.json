@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "release:check": "node validate-release-config.mjs && npm run typecheck && npm run lint",
     "typecheck": "tsc --noEmit",
     "prepare": "husky install"
   },

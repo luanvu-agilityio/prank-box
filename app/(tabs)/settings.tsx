@@ -8,6 +8,8 @@ import { colors } from '@/shared/constants/colors'
 import { useAppStore } from '@/stores/useAppStore'
 import { usePrankStore } from '@/stores/usePrankStore'
 import { useIAP } from '@/features/monetization/hooks/use-iap'
+import { useAdConsent } from '@/features/monetization/hooks/use-ad-consent'
+import { useAdStore } from '@/stores/useAdStore'
 
 export default function SettingsScreen() {
   const router = useRouter()
@@ -18,6 +20,8 @@ export default function SettingsScreen() {
   const setHapticsEnabled = useAppStore((state) => state.setHapticsEnabled)
   const setSoundEnabled = useAppStore((state) => state.setSoundEnabled)
   const { error: iapError, isLoading: isIAPLoading, purchase, restore } = useIAP()
+  const { showPrivacyOptions } = useAdConsent()
+  const privacyOptionsRequired = useAdStore((state) => state.privacyOptionsRequired)
 
   const handleBackPress = () => {
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
@@ -37,6 +41,11 @@ export default function SettingsScreen() {
   const handleRestore = () => {
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     void restore()
+  }
+
+  const handlePrivacyOptions = () => {
+    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+    void showPrivacyOptions()
   }
 
   return (
@@ -122,6 +131,18 @@ export default function SettingsScreen() {
           For entertainment purposes only. This app contains simulated pranks. No real shocks,
           ghosts, calls, or system changes occur. Please prank responsibly.
         </Text>
+        <View className="h-px bg-border" />
+        <Text className="py-4 font-inter text-caption leading-5 text-gray">
+          PrankBox does not collect prank inputs or personal content. Free users may see ads
+          provided by Google AdMob, which may process device and usage data for advertising.
+        </Text>
+        {privacyOptionsRequired && (
+          <Pressable accessibilityRole="button" onPress={handlePrivacyOptions}>
+            <Text className="border-t border-border py-4 font-inter-medium text-caption text-gold underline">
+              Manage ad privacy choices
+            </Text>
+          </Pressable>
+        )}
       </View>
     </ScrollView>
   )

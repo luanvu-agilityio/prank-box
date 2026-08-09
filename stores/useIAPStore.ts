@@ -55,6 +55,11 @@ export const useIAPStore = create<IAPStore>((set, get) => ({
       await connectAsync()
       setPurchaseListener((result) => void handlePurchase(result))
       const response = await getProductsAsync([MONETIZATION_CONFIG.productId])
+      const purchaseHistory = await getPurchaseHistoryAsync()
+      const hasPurchase = purchaseHistory.results?.some(
+        (purchaseItem) => purchaseItem.productId === MONETIZATION_CONFIG.productId,
+      )
+      if (hasPurchase) usePrankStore.getState().setPremium(true)
       set({ isInitialized: true, product: response.results?.[0] ?? null })
     } catch {
       set({ error: 'Purchases are currently unavailable.' })

@@ -20,7 +20,7 @@ export function FakeCallIncoming({
 }: FakeCallIncomingProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.incomingLabel}>INCOMING CALL...</Text>
+      <Text style={styles.incomingLabel}>SIMULATED INCOMING CALL</Text>
       <Animated.View style={[styles.avatar, pulseStyle]}>
         <Text style={styles.avatarText}>{callerName.slice(0, 1).toUpperCase()}</Text>
       </Animated.View>
@@ -29,6 +29,7 @@ export function FakeCallIncoming({
       <View style={styles.callActions}>
         <View style={styles.callAction}>
           <Pressable
+            accessibilityLabel="Decline simulated call"
             accessibilityRole="button"
             onPress={onDecline}
             style={[styles.circleButton, styles.declineButton]}
@@ -39,6 +40,7 @@ export function FakeCallIncoming({
         </View>
         <View style={styles.callAction}>
           <Pressable
+            accessibilityLabel="Accept simulated call"
             accessibilityRole="button"
             onPress={onAccept}
             style={[styles.circleButton, styles.acceptButton]}

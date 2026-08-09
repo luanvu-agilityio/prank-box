@@ -31,9 +31,11 @@ export function FakeCallSetup({
 }: FakeCallSetupProps) {
   return (
     <View style={styles.content}>
-      <Text style={styles.title}>FAKE CALL</Text>
+      <Text style={styles.title}>SIMULATED CALL</Text>
+      <Text style={styles.helper}>Caller details are display-only and never sent.</Text>
       <Text style={styles.label}>Caller Name</Text>
       <TextInput
+        accessibilityLabel="Simulated caller name"
         onChangeText={onCallerNameChange}
         placeholder="Mom"
         placeholderTextColor={colors.gray}
@@ -42,6 +44,7 @@ export function FakeCallSetup({
       />
       <Text style={styles.label}>Caller Number</Text>
       <TextInput
+        accessibilityLabel="Simulated caller number"
         keyboardType="phone-pad"
         onChangeText={onCallerNumberChange}
         placeholder="+1 555-0000"
@@ -53,6 +56,8 @@ export function FakeCallSetup({
       <View style={styles.delayRow}>
         {delayOptions.map((option) => (
           <Pressable
+            accessibilityLabel={`Set call delay to ${option.label}`}
+            accessibilityState={{ selected: delay === option.value }}
             accessibilityRole="button"
             key={option.value}
             onPress={() => {
@@ -67,7 +72,12 @@ export function FakeCallSetup({
           </Pressable>
         ))}
       </View>
-      <Pressable accessibilityRole="button" onPress={onStart} style={styles.startButton}>
+      <Pressable
+        accessibilityLabel="Start simulated call"
+        accessibilityRole="button"
+        onPress={onStart}
+        style={styles.startButton}
+      >
         <Ionicons color={colors.ink} name="call" size={20} />
         <Text style={styles.startButtonText}>START FAKE CALL</Text>
       </Pressable>
@@ -90,6 +100,7 @@ const styles = StyleSheet.create({
   delayRow: { flexDirection: 'row', gap: 8, marginTop: 4 },
   delayText: { color: colors.offWhite, fontFamily: 'Inter_700Bold', fontSize: 13 },
   delayTextSelected: { color: colors.ink },
+  helper: { color: colors.gray, fontFamily: 'Inter_400Regular', fontSize: 13, marginTop: -18 },
   input: {
     backgroundColor: colors.surface,
     borderColor: colors.border,

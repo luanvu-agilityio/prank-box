@@ -20,6 +20,7 @@ import { FakeCallSetup, type DelayOption } from '@/features/fake-call/components
 import { FakeCallWaiting } from '@/features/fake-call/components/fake-call-waiting'
 import { DisclaimerModal } from '@/shared/ui/disclaimer-modal'
 import { colors } from '@/shared/constants/colors'
+import { PrankIndicator } from '@/shared/ui/prank-indicator'
 import { useAppStore } from '@/stores/useAppStore'
 
 type CallStage = 'setup' | 'waiting' | 'incoming' | 'connected'
@@ -44,6 +45,7 @@ export default function FakeCallScreen() {
   const [isMuted, setIsMuted] = useState(false)
   const [isSpeakerOn, setIsSpeakerOn] = useState(false)
   const soundRef = useRef<Audio.Sound | null>(null)
+  const soundOperationRef = useRef(0)
   const delayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const hapticTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const callTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -56,7 +58,10 @@ export default function FakeCallScreen() {
       if (hapticTimerRef.current) clearInterval(hapticTimerRef.current)
       if (callTimerRef.current) clearInterval(callTimerRef.current)
       cancelAnimation(pulse)
-      void soundRef.current?.unloadAsync()
+      soundOperationRef.current += 1
+      const sound = soundRef.current
+      soundRef.current = null
+      void sound?.unloadAsync().catch(() => undefined)
     }
   }, [pulse])
 
@@ -65,10 +70,12 @@ export default function FakeCallScreen() {
     hapticTimerRef.current = null
     cancelAnimation(pulse)
     pulse.value = withTiming(1, { duration: 150 })
-    if (!soundRef.current) return
-    await soundRef.current.stopAsync()
-    await soundRef.current.unloadAsync()
+    soundOperationRef.current += 1
+    const sound = soundRef.current
     soundRef.current = null
+    if (!sound) return
+    await sound.stopAsync().catch(() => undefined)
+    await sound.unloadAsync().catch(() => undefined)
   }
 
   const startRing = async () => {
@@ -83,11 +90,16 @@ export default function FakeCallScreen() {
       }, 900)
     }
     if (!soundEnabled) return
+    const operation = ++soundOperationRef.current
     const { sound } = await Audio.Sound.createAsync(phoneRing, {
       isLooping: true,
       shouldPlay: true,
       volume: 0.9,
     })
+    if (operation !== soundOperationRef.current) {
+      await sound.unloadAsync().catch(() => undefined)
+      return
+    }
     soundRef.current = sound
   }
 
@@ -131,6 +143,7 @@ export default function FakeCallScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <PrankIndicator />
       <FakeCallHeader onBack={handleBack} onShowDisclaimer={() => setShowDisclaimer(true)} />
       {stage === 'setup' && (
         <FakeCallSetup

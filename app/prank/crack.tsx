@@ -4,7 +4,7 @@ import * as Haptics from 'expo-haptics'
 import { useRouter } from 'expo-router'
 import { useEffect, useRef, useState } from 'react'
 import type { GestureResponderEvent } from 'react-native'
-import { Pressable, Text, View, useWindowDimensions } from 'react-native'
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Svg, { Path } from 'react-native-svg'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
@@ -12,6 +12,7 @@ import glassCrack from '@/assets/sounds/glass-crack.mp3'
 import { colors } from '@/shared/constants/colors'
 import { DisclaimerModal } from '@/shared/ui/disclaimer-modal'
 import { useAppStore } from '@/stores/useAppStore'
+import { PrankIndicator } from '@/shared/ui/prank-indicator'
 
 interface Crack {
   id: number
@@ -129,11 +130,14 @@ export default function CrackScreen() {
     />
   )
 
+  const screenStyle = StyleSheet.create({
+    header: { top: insets.top + 8 },
+    screen: { paddingBottom: insets.bottom, paddingTop: insets.top },
+  })
+
   return (
-    <View
-      className="flex-1 bg-ink"
-      style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
-    >
+    <View className="flex-1 bg-ink" style={screenStyle.screen}>
+      <PrankIndicator />
       <Animated.View
         className="absolute inset-0 z-10 bg-white"
         pointerEvents="none"
@@ -144,7 +148,7 @@ export default function CrackScreen() {
         accessibilityRole="button"
         className="absolute left-5 z-20 h-11 w-11 items-center justify-center rounded-xl bg-white/10"
         onPress={handleBackPress}
-        style={{ top: insets.top + 8 }}
+        style={screenStyle.header}
       >
         <Ionicons color={colors.iceBlue} name="chevron-back" size={24} />
       </Pressable>
@@ -153,7 +157,7 @@ export default function CrackScreen() {
         accessibilityRole="button"
         className="absolute right-5 z-20 h-11 w-11 items-center justify-center rounded-xl bg-white/10"
         onPress={handleDisclaimerOpen}
-        style={{ top: insets.top + 8 }}
+        style={screenStyle.header}
       >
         <Ionicons color={colors.gray} name="warning-outline" size={20} />
       </Pressable>
