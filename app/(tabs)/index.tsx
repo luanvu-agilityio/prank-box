@@ -3,7 +3,7 @@ import * as Haptics from 'expo-haptics'
 import { useRouter } from 'expo-router'
 import { useCallback, useState } from 'react'
 import type { ListRenderItemInfo } from 'react-native'
-import { FlatList, Pressable, Text, View } from 'react-native'
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { PrankCard } from '@/features/prank-catalog/components/prank-card'
 import type { PrankConfig } from '@/features/prank-catalog/data/pranks'
@@ -56,7 +56,10 @@ export default function HomeScreen() {
   }, [markInterstitialShown, pendingNavigation])
 
   const handleDisclaimerClose = () => setShowDisclaimer(false)
-  const listContentStyle = { gap: 16, paddingBottom: insets.bottom + 32 }
+  const screenStyle = StyleSheet.create({ screen: { paddingTop: insets.top + 8 } })
+  const listContentStyle = StyleSheet.create({
+    content: { gap: 16, paddingBottom: insets.bottom + 32 },
+  })
 
   const renderPrankCard = ({ item }: ListRenderItemInfo<PrankConfig>) => (
     <View className="flex-1 px-1">
@@ -70,7 +73,7 @@ export default function HomeScreen() {
   )
 
   return (
-    <View className="flex-1 bg-ink px-4" style={{ paddingTop: insets.top + 8 }}>
+    <View className="flex-1 bg-ink px-4" style={screenStyle.screen}>
       <View className="mb-1 flex-row items-center justify-between">
         <View>
           <Text className="mb-1 font-mono text-micro tracking-widest text-gray">
@@ -92,7 +95,7 @@ export default function HomeScreen() {
       </View>
       <Text className="mb-6 font-inter text-base text-off-white">Pick a prank. Make a memory.</Text>
       <FlatList
-        contentContainerStyle={listContentStyle}
+        contentContainerStyle={listContentStyle.content}
         data={pranks}
         keyExtractor={(item) => item.id}
         numColumns={2}
