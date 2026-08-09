@@ -3,7 +3,7 @@ import { Audio } from 'expo-av'
 import * as Haptics from 'expo-haptics'
 import { useRouter } from 'expo-router'
 import { useEffect, useRef, useState } from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Animated, {
   cancelAnimation,
@@ -152,13 +152,11 @@ export const ShockScreen = () => {
     router.back()
   }
 
-  const screenStyle = StyleSheet.create({
-    header: { top: insets.top + 8 },
-    screen: { paddingBottom: insets.bottom, paddingTop: insets.top },
-  })
+  const headerTop = insets.top + 8
+  const screenInsets = { paddingBottom: insets.bottom, paddingTop: insets.top }
 
   return (
-    <View className="flex-1 bg-ink" style={screenStyle.screen}>
+    <View className="flex-1 bg-ink" style={screenInsets}>
       <PrankIndicator />
       <Animated.View
         className="absolute inset-0 bg-electric-yellow"
@@ -170,13 +168,13 @@ export const ShockScreen = () => {
         accessibilityRole="button"
         className="absolute left-5 top-4 z-10 h-11 w-11 items-center justify-center rounded-xl bg-white/10"
         onPress={handleBackPress}
-        style={screenStyle.header}
+        style={{ top: headerTop }}
       >
         <Ionicons color={colors.electricYellow} name="chevron-back" size={24} />
       </Pressable>
       <View
         className="absolute right-5 z-10 h-11 w-11 items-center justify-center rounded-xl bg-white/10"
-        style={screenStyle.header}
+        style={{ top: headerTop }}
       >
         <Ionicons color={colors.gray} name="warning-outline" size={20} />
       </View>
