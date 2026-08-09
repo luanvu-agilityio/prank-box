@@ -10,13 +10,13 @@ This skill guides the process of adding a new prank screen to PrankBox.
 ## Prerequisites
 
 1. Read AGENTS.md for project conventions.
-2. Check `constants/pranks.ts` to see existing prank entries (don't duplicate IDs).
+2. Check `features/prank-catalog/data/pranks.ts` to see existing prank entries (don't duplicate IDs).
 
 ## Steps
 
-### Step 1: Register the prank in constants
+### Step 1: Register the prank in the catalog
 
-Edit `constants/pranks.ts` and add a new entry:
+Edit `features/prank-catalog/data/pranks.ts` and add a new entry:
 
 ```typescript
 export interface PrankConfig {
@@ -41,9 +41,9 @@ export const PRANKS: PrankConfig[] = [
 ]
 ```
 
-### Step 2: Create the screen file
+### Step 2: Create the feature folder and screen
 
-Create `app/prank/<prank-id>.tsx` with this pattern:
+Create `features/<prank-name>/screens/<PrankName>Screen.tsx` with this pattern:
 
 ```typescript
 import { useState, useEffect } from 'react'
@@ -59,7 +59,7 @@ import Animated, {
   cancelAnimation,
 } from 'react-native-reanimated'
 
-export default function PrankIdScreen() {
+export const PrankNameScreen = () => {
   const router = useRouter()
   const [isActive, setIsActive] = useState(false)
 
@@ -89,10 +89,20 @@ const styles = StyleSheet.create({
 })
 ```
 
-### Step 3: Add sound asset (if needed)
+### Step 3: Create the thin route wrapper
+
+Create `app/prank/<prank-id>.tsx`:
+
+```typescript
+import { PrankNameScreen } from '@/features/<prank-name>/screens/PrankNameScreen'
+
+export default PrankNameScreen
+```
+
+### Step 4: Add sound asset (if needed)
 
 1. Place `.mp3` file in `assets/sounds/<prank-id>.mp3`
-2. Import and use with expo-av:
+2. Import and use with expo-av in the screen file:
 
 ```typescript
 import { Audio } from 'expo-av'
@@ -113,16 +123,17 @@ useEffect(() => {
 }, [])
 ```
 
-### Step 4: Verify
+### Step 5: Verify
 
-1. Check the prank appears on the home grid (it reads from `constants/pranks.ts`).
+1. Check the prank appears on the home grid (it reads from `features/prank-catalog/data/pranks.ts`).
 2. Tap the card navigates to `/prank/<prank-id>`.
 3. Run `npx tsc --noEmit` — zero errors.
 4. Ensure cleanup works (stop animations, unload sounds when navigating away).
 
 ## Rules
 
-- Each prank is fully self-contained in one file — no shared prank logic.
+- Each prank is self-contained in its own feature folder under `features/<prank-name>/`.
+- Route files (`app/prank/*.tsx`) must be thin 3-line wrappers.
 - Every prank screen must clean up resources in `useEffect` return.
 - Include "For entertainment purposes only" text somewhere visible.
-- Keep each prank screen under 300 lines. If it grows larger, extract shared UI to `components/`.
+- Keep each prank screen under 300 lines. If it grows larger, extract sub-components to `features/<prank-name>/components/`.

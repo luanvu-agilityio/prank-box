@@ -21,10 +21,11 @@
 
 | Layer | Technology |
 |---|---|
-| Framework | React Native via Expo (managed workflow) |
+| Framework | React Native via Expo (managed workflow, SDK 57) |
 | Language | TypeScript (strict mode) |
 | Navigation | Expo Router (file-based) |
 | State | Zustand |
+| Styling | NativeWind + Tailwind CSS |
 | Animations | react-native-reanimated v3 |
 | Haptics | expo-haptics |
 | Audio | expo-av |
@@ -32,6 +33,7 @@
 | Ads | react-native-google-mobile-ads |
 | IAP | expo-in-app-purchases (or react-native-iap) |
 | Icons | @expo/vector-icons (Ionicons) |
+| Class Variants | class-variance-authority, clsx, tailwind-merge |
 
 ## Project Structure
 
@@ -41,8 +43,8 @@ PrankBox/
 │   ├── (tabs)/
 │   │   ├── index.tsx           # Home: prank grid
 │   │   └── settings.tsx        # Settings
-│   ├── prank/
-│   │   ├── shock.tsx           # Each prank = 1 file
+│   ├── prank/                  # Thin route wrappers (3 lines each)
+│   │   ├── shock.tsx
 │   │   ├── crack.tsx
 │   │   ├── fakecall.tsx
 │   │   ├── clipper.tsx
@@ -50,9 +52,27 @@ PrankBox/
 │   │   ├── scream.tsx
 │   │   └── fakeupdate.tsx
 │   └── _layout.tsx             # Root layout (ad provider, onboarding)
-├── components/                 # Shared UI components
-├── stores/                     # Zustand stores
-├── constants/                  # Static config data
+├── features/                   # Feature-sliced modules
+│   ├── electric-shock/         # Each prank = self-contained folder
+│   │   ├── screens/            # Screen components
+│   │   ├── components/         # Prank-specific UI components
+│   │   ├── constants/          # Prank-specific config
+│   │   └── types/              # Prank-specific types
+│   ├── crack-screen/
+│   ├── fake-call/
+│   ├── hair-clipper/
+│   ├── ghost-detector/
+│   ├── scary-scream/
+│   ├── fake-update/
+│   ├── monetization/           # Ads + IAP
+│   ├── prank-catalog/          # Prank registry (data/pranks.ts)
+│   ├── settings/
+│   └── onboarding/
+├── shared/                     # Cross-feature shared code
+│   ├── ui/                     # Shared UI components (PascalCase files)
+│   ├── constants/              # Shared constants (kebab-case files)
+│   └── utils/                  # Shared utilities (kebab-case files)
+├── stores/                     # Zustand stores (camelCase files)
 ├── assets/                     # Sounds, images, fonts
 └── opencode.json               # AI agent config
 ```
@@ -106,9 +126,10 @@ PrankBox/
 
 ### Adding a New Prank (The 3-Step Rule)
 
-1. Create `app/prank/<prank-name>.tsx` — self-contained screen
-2. Add entry to `constants/pranks.ts` — id, name, description, icon, isFree
-3. Add sound asset to `assets/sounds/` if needed
+1. Create `app/prank/<prank-name>.tsx` — thin route wrapper importing the screen
+2. Create `features/<prank-name>/screens/<PrankScreen>.tsx` — self-contained screen (named export)
+3. Add entry to `features/prank-catalog/data/pranks.ts` — id, name, description, icon, isFree
+4. Add sound asset to `assets/sounds/` if needed
 
 The prank auto-appears on the home grid. No other wiring needed.
 
@@ -123,7 +144,7 @@ import { useRouter } from 'expo-router'
 import * as Haptics from 'expo-haptics'
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming } from 'react-native-reanimated'
 
-export default function PrankNameScreen() {
+export const PrankNameScreen = () => {
   const router = useRouter()
   const [isActive, setIsActive] = useState(false)
 
@@ -139,6 +160,14 @@ export default function PrankNameScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#000' },
 })
+```
+
+Route files (`app/prank/<name>.tsx`) re-export the named screen as default:
+
+```typescript
+import { PrankNameScreen } from '@/features/<prank-name>/screens/PrankNameScreen'
+
+export default PrankNameScreen
 ```
 
 ## Lint & Type Check Commands

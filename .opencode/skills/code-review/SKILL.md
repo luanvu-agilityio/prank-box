@@ -40,11 +40,12 @@ Run through every item before considering code ready.
 
 ### Architecture
 
-- [ ] Prank screens are self-contained in one file under `app/prank/`
-- [ ] Shared UI components are in `components/`
+- [ ] Prank screens are self-contained in feature folders under `features/<prank-name>/screens/`
+- [ ] Shared UI components are in `shared/ui/`
 - [ ] State is in Zustand stores under `stores/`
-- [ ] Static config data is in `constants/`
-- [ ] New prank follows the 3-step rule (screen file, constants entry, sound asset)
+- [ ] Static config data is in `features/<prank-name>/constants/` or `shared/constants/`
+- [ ] Route files (`app/prank/*.tsx`) are thin wrappers (3 lines) that re-export feature screens
+- [ ] New prank follows the 3-step rule (screen file, `features/prank-catalog/data/pranks.ts` entry, sound asset)
 - [ ] No new dependencies added without justification
 
 ### Resource Management
