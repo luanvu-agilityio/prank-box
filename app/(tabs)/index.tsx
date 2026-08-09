@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons'
 import * as Haptics from 'expo-haptics'
 import { useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import type { ListRenderItemInfo } from 'react-native'
 import { FlatList, Pressable, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -13,13 +13,17 @@ import { colors } from '@/shared/constants/colors'
 import { usePrankStore } from '@/stores/usePrankStore'
 import { useAdStore } from '@/stores/useAdStore'
 import { BannerAd } from '@/features/monetization/components/banner-ad'
+import { InterstitialAd } from '@/features/monetization/components/interstitial-ad'
 
 export default function HomeScreen() {
   const router = useRouter()
   const insets = useSafeAreaInsets()
   const isPremium = usePrankStore((state) => state.isPremium)
-  const incrementPrankOpen = useAdStore((state) => state.incrementPrankOpen)
   const [showDisclaimer, setShowDisclaimer] = useState(false)
+  const [showInterstitial, setShowInterstitial] = useState(false)
+  const [pendingNavigation, setPendingNavigation] = useState<(() => void) | null>(null)
+  const incrementPrankOpen = useAdStore((state) => state.incrementPrankOpen)
+  const markInterstitialShown = useAdStore((state) => state.markInterstitialShown)
 
   const showLockedMessage = () => {
     void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
@@ -31,6 +35,26 @@ export default function HomeScreen() {
     router.push('/settings')
   }
 
+  const handlePrankOpen = useCallback(
+    (navigate: () => void) => {
+      incrementPrankOpen()
+      if (useAdStore.getState().shouldShowInterstitial(isPremium)) {
+        setPendingNavigation(() => navigate)
+        setShowInterstitial(true)
+        return
+      }
+      navigate()
+    },
+    [incrementPrankOpen, isPremium],
+  )
+
+  const handleInterstitialDismiss = useCallback(() => {
+    markInterstitialShown()
+    setShowInterstitial(false)
+    pendingNavigation?.()
+    setPendingNavigation(null)
+  }, [markInterstitialShown, pendingNavigation])
+
   const handleDisclaimerClose = () => setShowDisclaimer(false)
   const listContentStyle = { gap: 16, paddingBottom: insets.bottom + 32 }
 
@@ -38,7 +62,7 @@ export default function HomeScreen() {
     <View className="flex-1 px-1">
       <PrankCard
         isLocked={!isPremium && !item.isFree}
-        onOpen={incrementPrankOpen}
+        onOpen={handlePrankOpen}
         onLockedPress={showLockedMessage}
         prank={item}
       />
@@ -76,6 +100,7 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
       />
       <BannerAd />
+      <InterstitialAd onDismiss={handleInterstitialDismiss} visible={showInterstitial} />
       <DisclaimerModal onClose={handleDisclaimerClose} visible={showDisclaimer} />
     </View>
   )

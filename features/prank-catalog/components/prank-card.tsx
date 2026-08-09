@@ -11,7 +11,7 @@ import { LockBadge } from './lock-badge'
 interface PrankCardProps {
   prank: PrankConfig
   isLocked: boolean
-  onOpen: () => void
+  onOpen: (navigate: () => void) => void
   onLockedPress: () => void
 }
 
@@ -35,8 +35,7 @@ export const PrankCard = ({ prank, isLocked, onLockedPress, onOpen }: PrankCardP
       onLockedPress()
       return
     }
-    onOpen()
-    router.push(prank.route)
+    onOpen(() => router.push(prank.route))
   }
 
   const handlePressIn = () => {
