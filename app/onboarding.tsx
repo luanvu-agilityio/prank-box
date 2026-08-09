@@ -4,10 +4,10 @@ import { useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { onboardingSteps } from '@/features/onboarding/constants/onboarding-steps'
-import { ActionButton } from '@/shared/ui/action-button'
+import { ActionButton } from '@/shared/ui/ActionButton'
 import { useAppStore } from '@/stores/useAppStore'
 
-export default function OnboardingScreen() {
+const OnboardingScreen = () => {
   const router = useRouter()
   const insets = useSafeAreaInsets()
   const setHasSeenOnboarding = useAppStore((state) => state.setHasSeenOnboarding)
@@ -103,3 +103,5 @@ export default function OnboardingScreen() {
     </View>
   )
 }
+
+export default OnboardingScreen

@@ -8,7 +8,7 @@ interface InterstitialAdProps {
   visible: boolean
 }
 
-export function InterstitialAd({ onDismiss, visible }: InterstitialAdProps) {
+export const InterstitialAd = ({ onDismiss, visible }: InterstitialAdProps) => {
   const adsReady = useAdStore((state) => state.adsReady)
 
   useEffect(() => {

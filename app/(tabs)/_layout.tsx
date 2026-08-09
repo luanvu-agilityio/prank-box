@@ -1,5 +1,7 @@
 import { Tabs } from 'expo-router'
 
-export default function TabLayout() {
+const TabLayout = () => {
   return <Tabs screenOptions={{ headerShown: false, tabBarStyle: { display: 'none' } }} />
 }
+
+export default TabLayout

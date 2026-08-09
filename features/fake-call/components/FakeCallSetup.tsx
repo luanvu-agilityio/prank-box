@@ -1,12 +1,8 @@
 import { Ionicons } from '@expo/vector-icons'
 import * as Haptics from 'expo-haptics'
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import type { DelayOption } from '@/features/fake-call/types/call-types'
 import { colors } from '@/shared/constants/colors'
-
-export interface DelayOption {
-  label: string
-  value: number
-}
 
 interface FakeCallSetupProps {
   callerName: string
@@ -19,7 +15,7 @@ interface FakeCallSetupProps {
   onStart: () => void
 }
 
-export function FakeCallSetup({
+export const FakeCallSetup = ({
   callerName,
   callerNumber,
   delay,
@@ -28,7 +24,7 @@ export function FakeCallSetup({
   onCallerNumberChange,
   onDelayChange,
   onStart,
-}: FakeCallSetupProps) {
+}: FakeCallSetupProps) => {
   return (
     <View style={styles.content}>
       <Text style={styles.title}>SIMULATED CALL</Text>

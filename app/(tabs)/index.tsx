@@ -5,18 +5,18 @@ import { useCallback, useEffect, useState } from 'react'
 import type { ListRenderItemInfo } from 'react-native'
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { PrankCard } from '@/features/prank-catalog/components/prank-card'
+import { PrankCard } from '@/features/prank-catalog/components/PrankCard'
 import type { PrankConfig } from '@/features/prank-catalog/data/pranks'
 import { pranks } from '@/features/prank-catalog/data/pranks'
 import { colors } from '@/shared/constants/colors'
 import { usePrankStore } from '@/stores/usePrankStore'
 import { useAdStore } from '@/stores/useAdStore'
-import { BannerAd } from '@/features/monetization/components/banner-ad'
-import { InterstitialAd } from '@/features/monetization/components/interstitial-ad'
-import { IAPModal } from '@/features/monetization/components/iap-modal'
-import { useIAP } from '@/features/monetization/hooks/use-iap'
+import { BannerAd } from '@/features/monetization/components/BannerAd'
+import { InterstitialAd } from '@/features/monetization/components/InterstitialAd'
+import { IAPModal } from '@/features/monetization/components/IAPModal'
+import { useIAP } from '@/features/monetization/hooks/useIap'
 
-export default function HomeScreen() {
+const HomeScreen = () => {
   const router = useRouter()
   const insets = useSafeAreaInsets()
   const isPremium = usePrankStore((state) => state.isPremium)
@@ -122,3 +122,5 @@ export default function HomeScreen() {
     </View>
   )
 }
+
+export default HomeScreen

@@ -3,15 +3,15 @@ import * as Haptics from 'expo-haptics'
 import { useRouter } from 'expo-router'
 import { Pressable, ScrollView, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { SettingRow } from '@/features/settings/components/setting-row'
+import { SettingRow } from '@/features/settings/components/SettingRow'
 import { colors } from '@/shared/constants/colors'
 import { useAppStore } from '@/stores/useAppStore'
 import { usePrankStore } from '@/stores/usePrankStore'
-import { useIAP } from '@/features/monetization/hooks/use-iap'
-import { useAdConsent } from '@/features/monetization/hooks/use-ad-consent'
+import { useIAP } from '@/features/monetization/hooks/useIap'
+import { useAdConsent } from '@/features/monetization/hooks/useAdConsent'
 import { useAdStore } from '@/stores/useAdStore'
 
-export default function SettingsScreen() {
+const SettingsScreen = () => {
   const router = useRouter()
   const insets = useSafeAreaInsets()
   const isPremium = usePrankStore((state) => state.isPremium)
@@ -147,3 +147,5 @@ export default function SettingsScreen() {
     </ScrollView>
   )
 }
+
+export default SettingsScreen

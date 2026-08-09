@@ -7,7 +7,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 import { GHOST_CONFIG } from '@/features/ghost-detector/constants/ghost-config'
-import { GhostDot } from '@/features/ghost-detector/components/ghost-dot'
+import { GhostDot } from '@/features/ghost-detector/components/GhostDot'
 import type { GhostDotData } from '@/features/ghost-detector/types/ghost-types'
 import { colors } from '@/shared/constants/colors'
 
@@ -15,7 +15,7 @@ interface RadarViewProps {
   dots: GhostDotData[]
 }
 
-export function RadarView({ dots }: RadarViewProps) {
+export const RadarView = ({ dots }: RadarViewProps) => {
   const rotation = useSharedValue(0)
   const sweepStyle = useAnimatedStyle(() => ({ transform: [{ rotate: `${rotation.value}deg` }] }))
   useEffect(() => {

@@ -11,13 +11,13 @@ interface FakeCallIncomingProps {
   pulseStyle: StyleProp<ViewStyle>
 }
 
-export function FakeCallIncoming({
+export const FakeCallIncoming = ({
   callerName,
   callerNumber,
   onAccept,
   onDecline,
   pulseStyle,
-}: FakeCallIncomingProps) {
+}: FakeCallIncomingProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.incomingLabel}>SIMULATED INCOMING CALL</Text>
