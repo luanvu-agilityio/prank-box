@@ -191,8 +191,8 @@ export const ClipperScreen = () => {
 const styles = StyleSheet.create({
   clipIcon: {
     alignItems: 'center',
-    backgroundColor: colors.clipperOrange + '12',
-    borderColor: colors.clipperOrange + '44',
+    backgroundColor: `${colors.clipperOrange}12`,
+    borderColor: `${colors.clipperOrange}44`,
     borderRadius: 60,
     borderWidth: 2,
     height: 140,

@@ -38,7 +38,7 @@ export const RadarView = ({ dots }: RadarViewProps) => {
 
 const styles = StyleSheet.create({
   radar: {
-    backgroundColor: colors.ghostPurple + '12',
+    backgroundColor: `${colors.ghostPurple}12`,
     borderColor: colors.ghostPurple,
     borderRadius: GHOST_CONFIG.radarSize / 2,
     borderWidth: 1,
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     width: GHOST_CONFIG.radarSize,
   },
   ringInner: {
-    borderColor: colors.ghostPurple + '55',
+    borderColor: `${colors.ghostPurple}55`,
     borderRadius: 50,
     borderWidth: 1,
     height: 100,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     width: 100,
   },
   ringMiddle: {
-    borderColor: colors.ghostPurple + '55',
+    borderColor: `${colors.ghostPurple}55`,
     borderRadius: 100,
     borderWidth: 1,
     height: 200,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     width: 200,
   },
   ringOuter: {
-    borderColor: colors.ghostPurple + '55',
+    borderColor: `${colors.ghostPurple}55`,
     borderRadius: 140,
     borderWidth: 1,
     height: 280,

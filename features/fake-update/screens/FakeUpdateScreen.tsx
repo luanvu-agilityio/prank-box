@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   content: { alignItems: 'center', flex: 1, justifyContent: 'center', paddingHorizontal: 40 },
   disclaimer: {
     bottom: 14,
-    color: colors.white + '66',
+    color: `${colors.white}66`,
     fontFamily: 'Inter_400Regular',
     fontSize: 11,
     left: 0,
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   },
   exitButton: {
     alignItems: 'center',
-    backgroundColor: colors.white + '12',
+    backgroundColor: `${colors.white}12`,
     borderRadius: 18,
     height: 36,
     justifyContent: 'center',
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   lockDate: { color: colors.white, fontFamily: 'Inter_400Regular', fontSize: 18, marginTop: 8 },
   lockHint: {
     bottom: 50,
-    color: colors.white + '99',
+    color: `${colors.white}99`,
     fontFamily: 'Inter_400Regular',
     fontSize: 13,
     position: 'absolute',
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   },
   progressSection: { alignItems: 'center', marginTop: 42, width: '100%' },
   progressTrack: {
-    backgroundColor: colors.white + '44',
+    backgroundColor: `${colors.white}44`,
     borderRadius: 3,
     height: 6,
     overflow: 'hidden',
