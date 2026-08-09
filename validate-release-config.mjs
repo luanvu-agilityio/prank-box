@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises'
+import { access, readFile } from 'node:fs/promises'
 
 const files = {
   app: 'app.json',
@@ -21,6 +21,23 @@ const failures = contents.flatMap(([file, content]) =>
     .filter((placeholder) => content.includes(placeholder))
     .map((placeholder) => `${file}: ${placeholder}`),
 )
+
+const appConfig = JSON.parse(contents.find(([file]) => file === files.app)[1])
+const iconPath = appConfig.expo?.icon
+if (!iconPath) failures.push('app.json: missing expo.icon')
+if (iconPath) {
+  try {
+    await access(iconPath)
+  } catch {
+    failures.push(`app.json: missing icon file ${iconPath}`)
+  }
+}
+
+try {
+  await access('eas.json')
+} catch {
+  failures.push('eas.json: missing EAS build configuration')
+}
 
 if (failures.length > 0) {
   console.error('Release configuration contains placeholders:')
