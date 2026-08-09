@@ -4,7 +4,6 @@ import { colors } from './shared/constants/colors'
 const config: Config = {
   content: [
     './app/**/*.{js,jsx,ts,tsx}',
-    './components/**/*.{js,jsx,ts,tsx}',
     './features/**/*.{js,jsx,ts,tsx}',
     './shared/**/*.{js,jsx,ts,tsx}',
   ],
