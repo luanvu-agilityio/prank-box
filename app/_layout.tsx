@@ -41,7 +41,6 @@ const RootLayout = () => {
       >
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="onboarding" />
-        <Stack.Screen name="prank" options={{ animation: 'slide_from_right' }} />
       </Stack>
     </SafeAreaProvider>
   )
