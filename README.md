@@ -1,15 +1,17 @@
 # PrankBox
 
-All-in-one prank app built with React Native + Expo. 7+ pranks in one download.
+All-in-one prank app built with React Native + Expo. 7 pranks in one download.
 
 ## Tech Stack
 
-- React Native via Expo (managed workflow)
+- React Native via Expo (managed workflow, SDK 57)
 - TypeScript (strict mode)
 - Expo Router (file-based navigation)
 - Zustand (state management)
 - Reanimated v3 (animations)
+- NativeWind + Tailwind CSS (styling)
 - expo-haptics, expo-av
+- @expo/vector-icons (Ionicons)"
 
 ## Getting Started
 
@@ -28,9 +30,10 @@ See AGENTS.md for full conventions and guidelines.
 
 Run `/new-prank <prank name>` in OpenCode, or manually:
 
-1. Create `app/prank/<prank-id>.tsx`
-2. Add entry to `constants/pranks.ts`
-3. Add sound asset to `assets/sounds/` if needed
+1. Create `app/prank/<prank-id>.tsx` — thin route wrapper
+2. Create screen in `features/<prank-name>/screens/`
+3. Add entry to `features/prank-catalog/data/pranks.ts`
+4. Add sound asset to `assets/sounds/` if needed
 
 ## Build & Deploy
 

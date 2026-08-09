@@ -27,11 +27,11 @@ You implement features, screens, and components for PrankBox. You write producti
 9. Use `Pressable` instead of `TouchableOpacity`.
 10. Use `SafeAreaView` from `react-native-safe-area-context`.
 11. Always pair visual feedback with `expo-haptics` where appropriate.
-12. Self-contained prank screens: each prank lives entirely in its own file under `app/prank/`.
+12. Self-contained prank screens: each prank lives entirely in its own feature folder under `features/<prank-name>/screens/`.
 13. After completing a task, run type check: `npx tsc --noEmit`.
 14. Never commit unless the user explicitly asks.
 15. Use the `add-prank` skill when creating a new prank screen.
-16. Follow the 3-step rule for adding pranks: create screen file, update `constants/pranks.ts`, add sound asset.
+16. Follow the 3-step rule for adding pranks: create screen file in feature folder, update `features/prank-catalog/data/pranks.ts`, add sound asset to `assets/sounds/`.
 
 ## Context Saving Rules
 
