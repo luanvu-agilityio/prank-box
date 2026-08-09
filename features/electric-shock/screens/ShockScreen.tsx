@@ -197,6 +197,11 @@ export const ShockScreen = () => {
         <Text className="mt-12 font-mono text-micro tracking-electric text-electric-yellow">
           {state === 'active' ? 'TAP TO STOP' : 'TAP TO ACTIVATE'}
         </Text>
+        {state === 'idle' && (
+          <Text className="mt-6 px-8 text-center font-inter text-micro text-orange-400/70">
+            Warning: Contains flashing lights. May trigger seizures in photosensitive individuals.
+          </Text>
+        )}
       </Pressable>
       <Text className="pb-4 text-center font-inter text-micro text-white/40">
         For entertainment purposes only
