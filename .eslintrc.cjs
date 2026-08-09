@@ -23,6 +23,10 @@ module.exports = {
   },
   overrides: [
     { files: ['tailwind.config.ts'], rules: { '@typescript-eslint/no-require-imports': 'off' } },
+    {
+      files: ['metro.config.js', 'babel.config.js'],
+      rules: { '@typescript-eslint/no-require-imports': 'off' },
+    },
   ],
   ignorePatterns: ['node_modules/', '.expo/', 'dist/', 'coverage/', '.opencode/'],
 }
