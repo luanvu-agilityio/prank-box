@@ -4,7 +4,7 @@ import { useAdStore } from '@/stores/useAdStore'
 
 let consentInitialization: Promise<void> | null = null
 
-export function useAdConsent() {
+export const useAdConsent = () => {
   const setAdsReady = useAdStore((state) => state.setAdsReady)
   const setPrivacyOptionsRequired = useAdStore((state) => state.setPrivacyOptionsRequired)
 

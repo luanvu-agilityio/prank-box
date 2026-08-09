@@ -12,7 +12,7 @@ interface FakeCallConnectedProps {
   onToggleSpeaker: () => void
 }
 
-export function FakeCallConnected({
+export const FakeCallConnected = ({
   callerName,
   elapsedSeconds,
   isMuted,
@@ -20,7 +20,7 @@ export function FakeCallConnected({
   onEndCall,
   onToggleMute,
   onToggleSpeaker,
-}: FakeCallConnectedProps) {
+}: FakeCallConnectedProps) => {
   const minutes = Math.floor(elapsedSeconds / 60)
     .toString()
     .padStart(2, '0')

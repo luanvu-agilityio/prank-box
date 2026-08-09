@@ -10,7 +10,7 @@ interface EmfMeterProps {
   reading: number
 }
 
-export function EmfMeter({ entity, level, reading }: EmfMeterProps) {
+export const EmfMeter = ({ entity, level, reading }: EmfMeterProps) => {
   const readingProgress = useSharedValue(reading / 10)
   const barFillStyle = useAnimatedStyle(() => ({ transform: [{ scaleX: readingProgress.value }] }))
 

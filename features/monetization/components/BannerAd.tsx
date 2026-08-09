@@ -4,7 +4,7 @@ import { AD_CONFIG } from '@/features/monetization/constants/ad-config'
 import { usePrankStore } from '@/stores/usePrankStore'
 import { useAdStore } from '@/stores/useAdStore'
 
-export function BannerAd() {
+export const BannerAd = () => {
   const isPremium = usePrankStore((state) => state.isPremium)
   const adsReady = useAdStore((state) => state.adsReady)
 

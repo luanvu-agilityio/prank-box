@@ -9,7 +9,7 @@ interface FakeCallWaitingProps {
   pulseStyle: StyleProp<ViewStyle>
 }
 
-export function FakeCallWaiting({ delay, onCancel, pulseStyle }: FakeCallWaitingProps) {
+export const FakeCallWaiting = ({ delay, onCancel, pulseStyle }: FakeCallWaitingProps) => {
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.avatar, pulseStyle]}>

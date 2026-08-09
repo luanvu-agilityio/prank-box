@@ -11,14 +11,14 @@ interface IAPModalProps {
   visible: boolean
 }
 
-export function IAPModal({
+export const IAPModal = ({
   error,
   isLoading,
   onClose,
   onPurchase,
   onRestore,
   visible,
-}: IAPModalProps) {
+}: IAPModalProps) => {
   const handleClose = () => {
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     onClose()

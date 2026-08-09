@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { colors } from '@/shared/constants/colors'
 
-export function PrankIndicator() {
+export const PrankIndicator = () => {
   return (
     <View accessibilityLabel="Prank simulation indicator" style={styles.container}>
       <Text style={styles.label}>PRANK</Text>

@@ -6,7 +6,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-na
 import { cva } from 'class-variance-authority'
 import { cn } from '@/shared/utils/cn'
 import type { PrankConfig } from '@/features/prank-catalog/data/pranks'
-import { LockBadge } from './lock-badge'
+import { LockBadge } from './LockBadge'
 
 interface PrankCardProps {
   prank: PrankConfig

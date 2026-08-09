@@ -7,7 +7,7 @@ interface FakeCallHeaderProps {
   onShowDisclaimer: () => void
 }
 
-export function FakeCallHeader({ onBack, onShowDisclaimer }: FakeCallHeaderProps) {
+export const FakeCallHeader = ({ onBack, onShowDisclaimer }: FakeCallHeaderProps) => {
   return (
     <View style={styles.container}>
       <Pressable

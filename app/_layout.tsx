@@ -7,12 +7,12 @@ import { useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { colors } from '@/shared/constants/colors'
 import { useAppStore } from '@/stores/useAppStore'
-import { useAdConsent } from '@/features/monetization/hooks/use-ad-consent'
+import { useAdConsent } from '@/features/monetization/hooks/useAdConsent'
 import '../global.css'
 
 void SplashScreen.preventAutoHideAsync()
 
-export default function RootLayout() {
+const RootLayout = () => {
   const [loaded] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
@@ -46,3 +46,5 @@ export default function RootLayout() {
     </SafeAreaProvider>
   )
 }
+
+export default RootLayout

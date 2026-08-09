@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useIAPStore } from '@/stores/useIAPStore'
 
-export function useIAP() {
+export const useIAP = () => {
   const initialize = useIAPStore((state) => state.initialize)
   const purchase = useIAPStore((state) => state.purchase)
   const restore = useIAPStore((state) => state.restore)

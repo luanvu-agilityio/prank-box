@@ -12,7 +12,7 @@ interface GhostDotProps {
   dot: GhostDotData
 }
 
-export function GhostDot({ dot }: GhostDotProps) {
+export const GhostDot = ({ dot }: GhostDotProps) => {
   const opacity = useSharedValue(0)
   const animatedStyle = useAnimatedStyle(() => ({
     backgroundColor: dot.color,
