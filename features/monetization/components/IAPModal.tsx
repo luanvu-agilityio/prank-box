@@ -76,7 +76,7 @@ export const IAPModal = ({
 const styles = StyleSheet.create({
   backdrop: {
     alignItems: 'center',
-    backgroundColor: colors.ink + 'CC',
+    backgroundColor: `${colors.ink}CC`,
     flex: 1,
     justifyContent: 'center',
     padding: 24,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   card: {
     alignItems: 'center',
     backgroundColor: colors.surface,
-    borderColor: colors.gold + '55',
+    borderColor: `${colors.gold}55`,
     borderRadius: 24,
     borderWidth: 1,
     padding: 24,

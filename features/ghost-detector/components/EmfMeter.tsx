@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   barFill: { backgroundColor: colors.ghostPurple, height: 8 },
   barTrack: { backgroundColor: colors.border, flex: 1, height: 8, overflow: 'hidden' },
   container: {
-    borderColor: colors.ghostPurple + '66',
+    borderColor: `${colors.ghostPurple}66`,
     borderRadius: 14,
     borderWidth: 1,
     marginHorizontal: 24,
