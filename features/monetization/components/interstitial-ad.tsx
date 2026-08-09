@@ -1,6 +1,7 @@
 import { AdEventType, InterstitialAd as GoogleInterstitialAd } from 'react-native-google-mobile-ads'
 import { useEffect } from 'react'
 import { AD_CONFIG } from '@/features/monetization/constants/ad-config'
+import { useAdStore } from '@/stores/useAdStore'
 
 interface InterstitialAdProps {
   onDismiss: () => void
@@ -8,8 +9,14 @@ interface InterstitialAdProps {
 }
 
 export function InterstitialAd({ onDismiss, visible }: InterstitialAdProps) {
+  const adsReady = useAdStore((state) => state.adsReady)
+
   useEffect(() => {
     if (!visible) return
+    if (!adsReady) {
+      onDismiss()
+      return
+    }
     const ad = GoogleInterstitialAd.createForAdRequest(AD_CONFIG.interstitialUnitId)
     const unsubscribeLoaded = ad.addAdEventListener(AdEventType.LOADED, () => {
       void ad.show()
@@ -22,7 +29,7 @@ export function InterstitialAd({ onDismiss, visible }: InterstitialAdProps) {
       unsubscribeClosed()
       unsubscribeError()
     }
-  }, [onDismiss, visible])
+  }, [adsReady, onDismiss, visible])
 
   return null
 }

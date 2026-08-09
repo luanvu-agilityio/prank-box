@@ -7,6 +7,7 @@ import { useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { colors } from '@/shared/constants/colors'
 import { useAppStore } from '@/stores/useAppStore'
+import { useAdConsent } from '@/features/monetization/hooks/use-ad-consent'
 import '../global.css'
 
 void SplashScreen.preventAutoHideAsync()
@@ -20,6 +21,7 @@ export default function RootLayout() {
     SpaceMono_700Bold,
   })
   const hasSeenOnboarding = useAppStore((state) => state.hasSeenOnboarding)
+  useAdConsent()
 
   useEffect(() => {
     if (loaded) void SplashScreen.hideAsync()
