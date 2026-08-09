@@ -18,4 +18,8 @@ export const colors = {
   ghostPurple: '#9C27B0',
   bloodRed: '#D32F2F',
   systemGray: '#607D8B',
+  roastFlame: '#FF6B35',
+  storageBlue: '#007AFF',
+  bugGreen: '#76FF03',
+  mindCyan: '#00BCD4',
 } as const
