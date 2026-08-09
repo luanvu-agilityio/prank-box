@@ -12,6 +12,7 @@ import { DisclaimerModal } from '@/shared/ui/disclaimer-modal'
 import { colors } from '@/shared/constants/colors'
 import { usePrankStore } from '@/stores/usePrankStore'
 import { useAdStore } from '@/stores/useAdStore'
+import { BannerAd } from '@/features/monetization/components/banner-ad'
 
 export default function HomeScreen() {
   const router = useRouter()
@@ -74,6 +75,7 @@ export default function HomeScreen() {
         renderItem={renderPrankCard}
         showsVerticalScrollIndicator={false}
       />
+      <BannerAd />
       <DisclaimerModal onClose={handleDisclaimerClose} visible={showDisclaimer} />
     </View>
   )
