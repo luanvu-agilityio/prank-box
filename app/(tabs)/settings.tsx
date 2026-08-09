@@ -7,16 +7,17 @@ import { SettingRow } from '@/features/settings/components/setting-row'
 import { colors } from '@/shared/constants/colors'
 import { useAppStore } from '@/stores/useAppStore'
 import { usePrankStore } from '@/stores/usePrankStore'
+import { useIAP } from '@/features/monetization/hooks/use-iap'
 
 export default function SettingsScreen() {
   const router = useRouter()
   const insets = useSafeAreaInsets()
   const isPremium = usePrankStore((state) => state.isPremium)
-  const setPremium = usePrankStore((state) => state.setPremium)
   const hapticsEnabled = useAppStore((state) => state.hapticsEnabled)
   const soundEnabled = useAppStore((state) => state.soundEnabled)
   const setHapticsEnabled = useAppStore((state) => state.setHapticsEnabled)
   const setSoundEnabled = useAppStore((state) => state.setSoundEnabled)
+  const { error: iapError, isLoading: isIAPLoading, purchase, restore } = useIAP()
 
   const handleBackPress = () => {
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
@@ -29,8 +30,13 @@ export default function SettingsScreen() {
   }
 
   const handleUnlock = () => {
-    void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
-    setPremium(true)
+    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+    void purchase()
+  }
+
+  const handleRestore = () => {
+    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+    void restore()
   }
 
   return (
@@ -69,13 +75,24 @@ export default function SettingsScreen() {
         {!isPremium && (
           <Pressable
             accessibilityRole="button"
+            disabled={isIAPLoading}
             onPress={handleUnlock}
             className="rounded-lg bg-gold px-4 py-2"
           >
-            <Text className="font-inter-bold text-caption text-ink">$1.99</Text>
+            <Text className="font-inter-bold text-caption text-ink">
+              {isIAPLoading ? '...' : '$1.99'}
+            </Text>
           </Pressable>
         )}
       </View>
+      {!isPremium && (
+        <View className="mt-2 flex-row items-center justify-between px-2">
+          <Text className="flex-1 font-inter text-caption text-error">{iapError ?? ''}</Text>
+          <Pressable accessibilityRole="button" onPress={handleRestore}>
+            <Text className="font-inter text-caption text-gray underline">Restore purchase</Text>
+          </Pressable>
+        </View>
+      )}
       <Text className="mb-2 mt-6 font-mono text-micro tracking-widest text-gray">PREFERENCES</Text>
       <View className="rounded-2xl bg-surface px-4">
         <SettingRow
