@@ -32,12 +32,18 @@ export function FakeCallConnected({
         <Ionicons color={colors.phoneGreen} name="call" size={40} />
       </View>
       <Text style={styles.callerName}>{callerName || 'Unknown Caller'}</Text>
-      <Text style={styles.connectedText}>Connected</Text>
+      <Text style={styles.connectedText}>SIMULATED CALL CONNECTED</Text>
       <Text style={styles.timer}>
         {minutes}:{seconds}
       </Text>
       <View style={styles.connectedActions}>
-        <Pressable accessibilityRole="button" onPress={onToggleMute} style={styles.connectedAction}>
+        <Pressable
+          accessibilityLabel={isMuted ? 'Unmute simulated call' : 'Mute simulated call'}
+          accessibilityRole="button"
+          accessibilityState={{ selected: isMuted }}
+          onPress={onToggleMute}
+          style={styles.connectedAction}
+        >
           <Ionicons
             color={isMuted ? colors.phoneGreen : colors.white}
             name={isMuted ? 'mic-off' : 'mic'}
@@ -46,7 +52,9 @@ export function FakeCallConnected({
           <Text style={styles.actionLabel}>Mute</Text>
         </Pressable>
         <Pressable
+          accessibilityLabel={isSpeakerOn ? 'Turn speaker off' : 'Turn speaker on'}
           accessibilityRole="button"
+          accessibilityState={{ selected: isSpeakerOn }}
           onPress={onToggleSpeaker}
           style={styles.connectedAction}
         >
@@ -59,6 +67,7 @@ export function FakeCallConnected({
         </Pressable>
       </View>
       <Pressable
+        accessibilityLabel="End simulated call"
         accessibilityRole="button"
         onPress={onEndCall}
         style={[styles.circleButton, styles.declineButton]}

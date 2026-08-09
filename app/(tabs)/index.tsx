@@ -1,34 +1,41 @@
 import { Ionicons } from '@expo/vector-icons'
 import * as Haptics from 'expo-haptics'
 import { useRouter } from 'expo-router'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import type { ListRenderItemInfo } from 'react-native'
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { PrankCard } from '@/features/prank-catalog/components/prank-card'
 import type { PrankConfig } from '@/features/prank-catalog/data/pranks'
 import { pranks } from '@/features/prank-catalog/data/pranks'
-import { DisclaimerModal } from '@/shared/ui/disclaimer-modal'
 import { colors } from '@/shared/constants/colors'
 import { usePrankStore } from '@/stores/usePrankStore'
 import { useAdStore } from '@/stores/useAdStore'
 import { BannerAd } from '@/features/monetization/components/banner-ad'
 import { InterstitialAd } from '@/features/monetization/components/interstitial-ad'
+import { IAPModal } from '@/features/monetization/components/iap-modal'
+import { useIAP } from '@/features/monetization/hooks/use-iap'
 
 export default function HomeScreen() {
   const router = useRouter()
   const insets = useSafeAreaInsets()
   const isPremium = usePrankStore((state) => state.isPremium)
-  const [showDisclaimer, setShowDisclaimer] = useState(false)
+  const [showIAP, setShowIAP] = useState(false)
   const [showInterstitial, setShowInterstitial] = useState(false)
   const [pendingNavigation, setPendingNavigation] = useState<(() => void) | null>(null)
   const incrementPrankOpen = useAdStore((state) => state.incrementPrankOpen)
   const markInterstitialShown = useAdStore((state) => state.markInterstitialShown)
+  const { error: iapError, isLoading: isIAPLoading, purchase, restore } = useIAP()
 
   const showLockedMessage = () => {
     void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
-    setShowDisclaimer(true)
+    setShowIAP(true)
   }
+
+  useEffect(() => {
+    if (!isPremium) return
+    void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+  }, [isPremium])
 
   const handleSettingsPress = () => {
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
@@ -55,7 +62,7 @@ export default function HomeScreen() {
     setPendingNavigation(null)
   }, [markInterstitialShown, pendingNavigation])
 
-  const handleDisclaimerClose = () => setShowDisclaimer(false)
+  const handleIAPClose = () => setShowIAP(false)
   const screenStyle = StyleSheet.create({ screen: { paddingTop: insets.top + 8 } })
   const listContentStyle = StyleSheet.create({
     content: { gap: 16, paddingBottom: insets.bottom + 32 },
@@ -104,7 +111,14 @@ export default function HomeScreen() {
       />
       <BannerAd />
       <InterstitialAd onDismiss={handleInterstitialDismiss} visible={showInterstitial} />
-      <DisclaimerModal onClose={handleDisclaimerClose} visible={showDisclaimer} />
+      <IAPModal
+        error={iapError}
+        isLoading={isIAPLoading}
+        onClose={handleIAPClose}
+        onPurchase={purchase}
+        onRestore={restore}
+        visible={showIAP && !isPremium}
+      />
     </View>
   )
 }

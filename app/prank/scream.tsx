@@ -42,6 +42,7 @@ export default function ScreamScreen() {
   }))
 
   useEffect(() => {
+    let cancelled = false
     const delay =
       SCREAM_CONFIG.minDelay + Math.random() * (SCREAM_CONFIG.maxDelay - SCREAM_CONFIG.minDelay)
     const scareTimer = setTimeout(() => {
@@ -57,7 +58,11 @@ export default function ScreamScreen() {
       if (hapticsEnabled) void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
       if (soundEnabled) {
         void Audio.Sound.createAsync(screamSound, { shouldPlay: true, volume: 1 }).then(
-          ({ sound }) => {
+          async ({ sound }) => {
+            if (cancelled) {
+              await sound.unloadAsync().catch(() => undefined)
+              return
+            }
             soundRef.current = sound
           },
         )
@@ -66,12 +71,14 @@ export default function ScreamScreen() {
     }, delay)
 
     return () => {
+      cancelled = true
       clearTimeout(scareTimer)
       if (scareEndTimerRef.current) clearTimeout(scareEndTimerRef.current)
       cancelAnimation(shake)
       cancelAnimation(scale)
-      void soundRef.current?.unloadAsync()
+      const sound = soundRef.current
       soundRef.current = null
+      void sound?.unloadAsync().catch(() => undefined)
     }
   }, [cycle, hapticsEnabled, scale, shake, soundEnabled])
 

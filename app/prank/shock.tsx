@@ -15,6 +15,7 @@ import Animated, {
 } from 'react-native-reanimated'
 import { useAppStore } from '@/stores/useAppStore'
 import { colors } from '@/shared/constants/colors'
+import { PrankIndicator } from '@/shared/ui/prank-indicator'
 import electricBuzz from '@/assets/sounds/electric-buzz.mp3'
 
 export default function ShockScreen() {
@@ -24,6 +25,7 @@ export default function ShockScreen() {
   const hapticsEnabled = useAppStore((state) => state.hapticsEnabled)
   const [isActive, setIsActive] = useState(false)
   const soundRef = useRef<Audio.Sound | null>(null)
+  const soundOperationRef = useRef(0)
   const hapticTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const pulse = useSharedValue(1)
   const flash = useSharedValue(0)
@@ -50,7 +52,10 @@ export default function ShockScreen() {
       cancelAnimation(boltScale)
       cancelAnimation(arcProgress)
       if (hapticTimerRef.current) clearInterval(hapticTimerRef.current)
-      void soundRef.current?.unloadAsync()
+      soundOperationRef.current += 1
+      const sound = soundRef.current
+      soundRef.current = null
+      void sound?.unloadAsync().catch(() => undefined)
     }
   }, [arcProgress, boltScale, flash, pulse])
 
@@ -69,19 +74,29 @@ export default function ShockScreen() {
 
   const startSound = async () => {
     if (!soundEnabled) return
+    const operation = ++soundOperationRef.current
+    const previousSound = soundRef.current
+    soundRef.current = null
+    await previousSound?.unloadAsync().catch(() => undefined)
     const { sound } = await Audio.Sound.createAsync(electricBuzz, {
       isLooping: true,
       volume: 0.8,
       shouldPlay: true,
     })
+    if (operation !== soundOperationRef.current) {
+      await sound.unloadAsync().catch(() => undefined)
+      return
+    }
     soundRef.current = sound
   }
 
   const stopSound = async () => {
-    if (!soundRef.current) return
-    await soundRef.current.stopAsync()
-    await soundRef.current.unloadAsync()
+    soundOperationRef.current += 1
+    const sound = soundRef.current
     soundRef.current = null
+    if (!sound) return
+    await sound.stopAsync().catch(() => undefined)
+    await sound.unloadAsync().catch(() => undefined)
   }
 
   const startShock = async () => {
@@ -130,6 +145,7 @@ export default function ShockScreen() {
 
   return (
     <View className="flex-1 bg-ink" style={screenStyle.screen}>
+      <PrankIndicator />
       <Animated.View
         className="absolute inset-0 bg-electric-yellow"
         pointerEvents="none"

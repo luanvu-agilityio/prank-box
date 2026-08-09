@@ -12,6 +12,7 @@ import glassCrack from '@/assets/sounds/glass-crack.mp3'
 import { colors } from '@/shared/constants/colors'
 import { DisclaimerModal } from '@/shared/ui/disclaimer-modal'
 import { useAppStore } from '@/stores/useAppStore'
+import { PrankIndicator } from '@/shared/ui/prank-indicator'
 
 interface Crack {
   id: number
@@ -136,6 +137,7 @@ export default function CrackScreen() {
 
   return (
     <View className="flex-1 bg-ink" style={screenStyle.screen}>
+      <PrankIndicator />
       <Animated.View
         className="absolute inset-0 z-10 bg-white"
         pointerEvents="none"

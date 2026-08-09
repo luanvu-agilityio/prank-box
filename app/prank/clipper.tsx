@@ -18,6 +18,7 @@ import { CLIPPER_CONFIG } from '@/features/hair-clipper/constants/clipper-config
 import type { ClipperIntensity } from '@/features/hair-clipper/types/clipper-types'
 import { colors } from '@/shared/constants/colors'
 import { DisclaimerModal } from '@/shared/ui/disclaimer-modal'
+import { PrankIndicator } from '@/shared/ui/prank-indicator'
 import { useAppStore } from '@/stores/useAppStore'
 
 export default function ClipperScreen() {
@@ -28,6 +29,7 @@ export default function ClipperScreen() {
   const [intensity, setIntensity] = useState<ClipperIntensity>(0.7)
   const [showDisclaimer, setShowDisclaimer] = useState(false)
   const soundRef = useRef<Audio.Sound | null>(null)
+  const soundOperationRef = useRef(0)
   const hapticTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const tremble = useSharedValue(0)
   const intensityProgress = useSharedValue(intensity)
@@ -43,24 +45,37 @@ export default function ClipperScreen() {
     return () => {
       cancelAnimation(tremble)
       if (hapticTimerRef.current) clearInterval(hapticTimerRef.current)
-      void soundRef.current?.unloadAsync()
+      soundOperationRef.current += 1
+      const sound = soundRef.current
+      soundRef.current = null
+      void sound?.unloadAsync().catch(() => undefined)
     }
   }, [tremble])
 
   const stopSound = async () => {
-    if (!soundRef.current) return
-    await soundRef.current.stopAsync()
-    await soundRef.current.unloadAsync()
+    soundOperationRef.current += 1
+    const sound = soundRef.current
     soundRef.current = null
+    if (!sound) return
+    await sound.stopAsync().catch(() => undefined)
+    await sound.unloadAsync().catch(() => undefined)
   }
 
   const startSound = async () => {
     if (!soundEnabled) return
+    const operation = ++soundOperationRef.current
+    const previousSound = soundRef.current
+    soundRef.current = null
+    await previousSound?.unloadAsync().catch(() => undefined)
     const { sound } = await Audio.Sound.createAsync(clipperBuzz, {
       isLooping: true,
       shouldPlay: true,
       volume: 0.8,
     })
+    if (operation !== soundOperationRef.current) {
+      await sound.unloadAsync().catch(() => undefined)
+      return
+    }
     soundRef.current = sound
   }
 
@@ -125,6 +140,7 @@ export default function ClipperScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <PrankIndicator />
       <View style={styles.header}>
         <Pressable
           accessibilityLabel="Go back"

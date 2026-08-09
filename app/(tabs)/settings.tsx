@@ -122,6 +122,11 @@ export default function SettingsScreen() {
           For entertainment purposes only. This app contains simulated pranks. No real shocks,
           ghosts, calls, or system changes occur. Please prank responsibly.
         </Text>
+        <View className="h-px bg-border" />
+        <Text className="py-4 font-inter text-caption leading-5 text-gray">
+          PrankBox does not collect prank inputs or personal content. Free users may see ads
+          provided by Google AdMob, which may process device and usage data for advertising.
+        </Text>
       </View>
     </ScrollView>
   )

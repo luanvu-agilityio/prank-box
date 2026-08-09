@@ -9,7 +9,13 @@ const files = {
 const contents = await Promise.all(
   Object.values(files).map(async (file) => [file, await readFile(file, 'utf8')]),
 )
-const placeholders = ['YOUR-ID', 'YOUR-BANNER-ID', 'YOUR-INTERSTITIAL-ID', 'com.yourname.']
+const placeholders = [
+  'YOUR-ID',
+  'YOUR-BANNER-ID',
+  'YOUR-INTERSTITIAL-ID',
+  'com.yourname.',
+  'ca-app-pub-3940256099942544~',
+]
 const failures = contents.flatMap(([file, content]) =>
   placeholders
     .filter((placeholder) => content.includes(placeholder))
